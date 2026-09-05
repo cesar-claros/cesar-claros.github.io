@@ -1,0 +1,27 @@
+_site
+.bundle
+.DS_store
+.idea
+.jekyll-cache
+.jekyll-metadata
+.ruby-version
+.sass-cache
+.tweet-cache
+.venv
+assets/libs/
+assets/rendercv/rendercv_output/*.typ
+al-folio-upgrade-report.md
+node_modules/
+output/playwright/
+test-results/
+vendor
+AGENTS.md
+CLAUDE.md
+.agents
+.claude
+.codex
+copilot-instructions.md
+.github/agents
+# Python bytecode from bin/ helper scripts
+__pycache__/
+*.pyc

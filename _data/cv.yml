@@ -1,0 +1,156 @@
+# CV data in RenderCV format (https://docs.rendercv.com/user_guide/).
+# Rendered on /cv/ by the al_folio_cv plugin and to PDF by .github/workflows/render-cv.yml.
+# Ported from assets/pdf/CV_Cesar.pdf (2021 edition). TODO: bring up to date.
+#
+# Section names matter for the web renderer: "Education", "Experience", "Publications" and
+# "Languages" get dedicated layouts; any other section renders `bullet` or `label`/`details` entries.
+cv:
+  name: Claudio César Claros Olivares
+  location: La Paz, Bolivia
+  email: cesar.claros@outlook.com
+  website: https://cesar-claros.github.io/
+  social_networks:
+    - network: GitHub
+      username: cesar-claros
+
+  sections:
+    Education:
+      - institution: Universidad Mayor de San Andrés (UMSA)
+        area: Electronics Engineering
+        degree: M.Sc.
+        location: La Paz, Bolivia
+        start_date: "2020-10"
+        end_date: present
+
+      - institution: University of Delaware
+        area: Electrical and Computer Engineering
+        degree: M.Sc.
+        location: Newark, DE, USA
+        start_date: "2018-08"
+        end_date: "2020-08"
+        highlights:
+          - "Concentration: Signal Processing, Communications, and Controls"
+          - "Thesis: *Synergistic Human-Machine Prediction: Active Error Analysis and Mitigation with Gaussian Process Regression* (advisor: Austin J. Brockmeier)"
+          - "GPA: 3.93/4.00"
+
+      - institution: Centro Psicopedagógico y de Investigación en Educación Superior (CEPIES)
+        area: University Teaching
+        degree: Certificate
+        location: La Paz, Bolivia
+        start_date: "2015-08"
+        end_date: "2015-11"
+
+      - institution: Universidad Mayor de San Andrés (UMSA)
+        area: Electronics Engineering
+        degree: B.S.
+        location: La Paz, Bolivia
+        start_date: "2007-02"
+        end_date: "2014-12"
+        highlights:
+          - "Major: Control Systems"
+          - "Graduation project: *Prototipo para generación de consignas de control a partir de los ritmos cerebrales alpha y mu. Caso de estudio: Factibilidad de uso de la plataforma Emotiv EPOC* (advisor: Javier Sanabria García)"
+          - Class valedictorian
+
+    Experience:
+      - company: Computational Neural and Information Engineering Lab, University of Delaware
+        position: Research Assistant
+        location: Newark, DE, USA
+        start_date: "2019-07"
+        end_date: "2020-08"
+        highlights:
+          - Developed a synergistic system for human-machine prediction through active error analysis of a model's systematic errors using Gaussian process regression.
+
+      - company: Institute of Applied Electronics, UMSA
+        position: Researcher
+        location: La Paz, Bolivia
+        start_date: "2017-06"
+        end_date: "2017-12"
+        highlights:
+          - Designed and implemented embedded software for signal acquisition and control of a mobile robot prototype for multi-agent research.
+
+      - company: Institute of Applied Electronics, UMSA
+        position: Researcher
+        location: La Paz, Bolivia
+        start_date: "2016-04"
+        end_date: "2016-12"
+        highlights:
+          - Developed a platform of mobile sensor nodes for controlled environments, covering the design of the robotic units and the data acquisition and signal processing tools.
+
+      - company: Agencia para el Desarrollo de la Sociedad de la Información en Bolivia (ADSIB)
+        position: Research Intern
+        location: La Paz, Bolivia
+        start_date: "2015-09"
+        end_date: "2015-12"
+        highlights:
+          - Designed and implemented an FPGA interface for Ethernet communication dedicated to packet acquisition and routing for the FPGA-based router project.
+
+      - company: Digital Signal Processing Lab, Electronics Engineering Department, UMSA
+        position: Laboratory Assistant
+        location: La Paz, Bolivia
+        start_date: "2013-07"
+        end_date: "2013-12"
+        highlights:
+          - Responsible for the maintenance and operation of the digital signal processing laboratory.
+
+      - company: Institute of Applied Electronics, UMSA
+        position: Research Assistant
+        location: La Paz, Bolivia
+        start_date: "2012-03"
+        end_date: "2012-08"
+        highlights:
+          - Developed a software application for EEG acquisition and spectral analysis via the fast Fourier transform.
+
+    Publications:
+      - title: Max-sliced Bures distance for interpreting discrepancies
+        authors:
+          - Austin J. Brockmeier
+          - Claudio César Claros Olivares
+          - Matthew S. Emigh
+          - Luis G. Sanchez Giraldo
+        date: "2021"
+        journal: Preprint # TODO: final venue
+
+      - title: "Synergistic human-machine prediction: Active error analysis and mitigation with Gaussian process regression"
+        authors:
+          - Claudio César Claros Olivares
+        date: "2020"
+        journal: M.Sc. thesis, University of Delaware
+
+      - title: "Prototipo para generación de consignas de control a partir de los ritmos sensomotores. Caso de estudio: Factibilidad de empleo de la plataforma Emotiv Epoc"
+        authors:
+          - Claudio César Claros Olivares
+          - Javier Sanabria García
+        date: "2015"
+        journal: IEEE Bolivian Engineering and Technology Congress (BETCON), La Paz, Bolivia
+
+    Presentations:
+      - bullet: "**Feb. 2020**: Poster, *Active error analysis and mitigation for synergistic machine learning infrastructure*, DARWIN Computing Symposium, Data Science Institute, University of Delaware."
+      - bullet: "**Nov. 2019**: Invited talk, *Learning an error-aware model for synergistic human-machine prediction*, SIG-AI Seminar, Department of Computer and Information Sciences, University of Delaware."
+      - bullet: "**Apr. 2016**: Invited talk, *Digital signal processing algorithms and machine learning*, IEEE Seminar on Artificial Intelligence, IEEE Student Branch, Universidad Católica Boliviana, La Paz."
+      - bullet: "**May 2015**: Invited talk on the *Sensor your Swarm* project, First International Scientific Congress on Engineering, La Paz."
+      - bullet: "**Aug. 2014**: Invited talk, *Research on brain signal processing*, La Paz Ciudad Digital 2.0, representing the Institute of Applied Electronics, UMSA."
+
+    "Honors & Awards":
+      - bullet: "**2017**: Bolivian Government Scholarship for graduate studies abroad (30 of 100 scholarships awarded nationwide that year)."
+      - bullet: "**2015**: Honorable Mention, *Most Challenging Team*, Minesweepers: Towards a Landmine-Free World 2015, Antofagasta, Chile (Bolivian Team)."
+      - bullet: "**2015**: Senatorial Declaration, Chamber of Senators of the Plurinational Legislative Assembly of Bolivia, for outstanding participation in the NASA Space Apps Challenge 2015."
+      - bullet: "**2015**: Resolution of the Honorable University Council, UMSA, for outstanding participation in the NASA Space Apps Challenge 2015."
+      - bullet: "**2015**: Worldwide finalist, NASA Space Apps Challenge 2015: nationwide winner for *Best Robotics Theme Project* and worldwide finalist for *Best Mission Concept Project* with the project *Sensor your Swarm*."
+      - bullet: "**2015**: Maximum score on the undergraduate graduation project, Electronics Engineering Department, UMSA."
+      - bullet: "**2010**: Remarkable academic performance, UMSA. Congratulatory letter awarded to the best students of the year."
+
+    Technical Skills:
+      - label: Programming languages
+        details: Python, C/C++, MATLAB, Octave, JavaScript, Julia
+      - label: Libraries
+        details: OpenCV, CUDA, SciPy, NumPy, pandas
+      - label: Machine learning frameworks
+        details: TensorFlow, PyTorch, Keras, scikit-learn
+
+    Languages:
+      - name: Spanish
+        summary: Native
+      - name: English
+        summary: Fluent (TOEFL 104/120, ECCE)
+      - name: French
+        summary: Intermediate (DELF B2)

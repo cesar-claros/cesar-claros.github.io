@@ -1,0 +1,6 @@
+# Venue abbreviations used in the `abbr` field of bib entries, with optional url/color.
+#
+# "ICML":
+#   url: https://icml.cc/
+#   color: "#00369f"
+{}

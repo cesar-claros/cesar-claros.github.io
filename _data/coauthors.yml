@@ -1,0 +1,7 @@
+# Co-author metadata: keys are lower-cased last names without accents.
+# Matching authors in _bibliography/papers.bib get linked to the given url.
+#
+# "brockmeier":
+#   - firstname: ["Austin", "A.", "A. J.", "Austin J."]
+#     url: https://example.org
+{}
