@@ -1,0 +1,205 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Interpretable EEG biomarkers for epilepsy | César Claros </title> <meta name="author" content="César Claros"> <meta name="description" content="Finding waveform biomarkers that characterize epilepsy in routine scalp EEG, benchmarked against random-convolution and foundation-model classifiers. In collaboration with Nemours Children's Health."> <meta name="keywords" content="César Claros, machine learning, research"> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; media-src 'self' https:; frame-src 'self' https:; connect-src 'self' https:;"> <style>
+  :root {
+    --max-content-width: 930px;
+  }
+</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css" integrity="sha256-MVopmdyC2tYTiJ8wlktf0uh0v4NgT+vNdyVFepi7Q0c=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.5/css/academicons.min.css" integrity="sha256-SzrCOBJbGVFMahewkgjwnApaV2+av1DwMAA+/QGLyZw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/scholar-icons@1.0.3/css/scholar-icons.css" integrity="sha256-VY3hHVj/hNX3fYG6wtbA6TcKJQl7+FthzGSyIB64klY=" crossorigin="anonymous"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="/assets/img/favicon.png?v=186d48e14e50463201ced43f7e7c9a58"> <link rel="apple-touch-icon" href="/assets/img/favicon.png?v=186d48e14e50463201ced43f7e7c9a58"> <link rel="stylesheet" href="/assets/css/main.css?v=3116ba77db9ee1581d05bb3e86fbf7f1"> <link rel="canonical" href="https://cesar-claros.github.io/projects/eeg-epilepsy-biomarkers/"> <script src="/assets/js/theme.js?v=5286c3e4c334d0ecb8fc0c40ff4fa7ec"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?v=5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> <span class="font-weight-bold">César</span> Claros </a> <button class="navbar-toggler collapsed navbar-toggler-main" type="button" data-nav-toggle="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse navbar-collapse-main" id="navbarNav"> <ul class="navbar-nav navbar-menu-list flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">about </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/">publications </a> </li> <li class="nav-item active"> <a class="nav-link" href="/projects/">projects <span class="sr-only">(current)</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/">CV </a> </li> <li class="nav-item "> <a class="nav-link" href="/repositories/">repositories </a> </li> <li class="nav-item "> <a class="nav-link" href="/blog/">blog </a> </li> <li class="nav-item"> <button id="search-toggle" type="button" title="Search" aria-label="Open search"> <span class="nav-link">ctrl k <i class="fa-solid fa-magnifying-glass"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <h1 class="post-title">Interpretable EEG biomarkers for epilepsy</h1> <p class="post-description">Finding waveform biomarkers that characterize epilepsy in routine scalp EEG, benchmarked against random-convolution and foundation-model classifiers. In collaboration with Nemours Children's Health.</p> </header> <article> <p>Routine scalp EEG is the most accessible neurological recording, but deciding from a single session whether a patient has epilepsy is hard when no seizure is captured. In collaboration with <a href="https://www.nemours.org/" rel="external nofollow noopener" target="_blank">Nemours Children’s Health</a>, the goal of this project is to find interpretable EEG biomarkers that characterize epilepsy: waveforms a clinician can inspect, rather than a score from a black box. We use the <a href="https://isip.piconepress.com/projects/nedc/html/tuh_eeg/" rel="external nofollow noopener" target="_blank">Temple University Hospital EEG Epilepsy Corpus</a> as development data.</p> <p><strong>Benchmarks.</strong> The first phase established strong classification baselines to measure the interpretable approach against. Recordings are cut into fixed-length windows, balanced and split at the subject level so no patient appears on both sides of a split. Each window is transformed with <a href="https://link.springer.com/article/10.1007/s10618-023-00939-3" rel="external nofollow noopener" target="_blank">HYDRA</a>, a random convolutional kernel transform, and the sparse features feed a cross-validated linear classifier whose window scores are aggregated into one prediction per subject. We compared signal representations along the way (raw referential channels versus the transverse bipolar montage, ICA-cleaned signals and brain sources selected with ICLabel and dipole fitting, and a bag-of-components representation that pools per-source features), and benchmarked pretrained EEG foundation models from the <a href="https://github.com/pulp-bio/BioFoundation" rel="external nofollow noopener" target="_blank">BioFoundation</a> family (FEMBA, LUNA, LuMamba). We also audited dataset confounds such as sampling rate and line noise before trusting any accuracy number. These models are benchmarks for classification accuracy only; they do not explain what in the signal separates the groups.</p> <p><strong>Interpretable approach.</strong> The next phase adapts and implements a waveform-based pipeline built on two pieces of prior work from our group: <a href="https://arxiv.org/abs/2608.15492" rel="external nofollow noopener" target="_blank">QSMP</a> (Mendoza-Cardenas, Silva, and Brockmeier, MLSP 2026), which finds representative subsequences in long time series by combining Quick Shift mode seeking with the Matrix Profile, and the bag-of-waves classifiers that produced <a href="https://doi.org/10.1088/1741-2552/ae4d8c" rel="external nofollow noopener" target="_blank">interpretable EEG biomarkers in mouse models of neurological disease</a> (Cano Achuri et al., Journal of Neural Engineering, 2026). The idea is to discover a dictionary of representative waveforms across recordings, describe each recording by how often those waveforms occur, and train a sparse classifier whose features are the waveforms themselves. We expect to give up some accuracy relative to HYDRA and the foundation models in exchange for biomarkers that can be inspected, localized, and related to clinical EEG practice.</p> <p>This project is in progress. Code: <a href="https://github.com/cesar-claros/tuh-eeg-epilepsy" rel="external nofollow noopener" target="_blank">tuh-eeg-epilepsy</a>.</p> </article> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 César Claros. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. Last updated: September 08, 2026. </div> </footer> <script>
+  window.alFolio = {
+    compatBootstrap: false
+  };
+</script> <script src="/assets/js/nav-toggle.js?v=141bd79a73ebc0f0b6ea58e440ae79fc"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?v=e49affc7bd2646f6acdad1dbe02c2359" type="text/javascript"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/al_math/js/mathjax-setup.js"></script> <script src="/assets/js/tooltips-setup.js?v=fe487e99db6c43751e6e7bdb2d6a0611"></script> <script src="/assets/js/no_defer.js?v=53b1b1a645525975c963ce8bf8bfefcf"></script> <script defer src="/assets/js/common.js?v=87baac90f765f2f3362dcf6aaf312a8a"></script> <script defer src="/assets/js/copy_code.js?v=c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?v=896d254890d9b47f0281f63bfccf0dee"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/al_img_tools/js/zoom.js"></script> <script defer src="/assets/js/progress-bar.js?v=499464c5c63ced6cf7ad62509f1e2610" type="text/javascript"></script> <script src="https://cdn.jsdelivr.net/npm/vanilla-back-to-top@7.2.1/dist/vanilla-back-to-top.min.js" integrity="sha256-uMJJ3EoTyfRBoTbR+lrfu1uRQ87RZG8AR3cVNuQVeFg=" crossorigin="anonymous"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/assets/al_search/js/search/ninja-keys.min.js"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/al_search/js/search-setup.js"></script> <script>
+// get the ninja-keys element
+const ninja = document.querySelector('ninja-keys');
+
+// add the home and posts menu items
+ninja.data = [{
+    id: "nav-about",
+    title: "about",
+    section: "Navigation",
+    handler: () => {
+      window.location.href = "/";
+    },
+  },{id: "nav-publications",
+          title: "publications",
+          description: "publications in reverse chronological order.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/publications/";
+          },
+        },{id: "nav-projects",
+          title: "projects",
+          description: "research projects and code.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/projects/";
+          },
+        },{id: "nav-cv",
+          title: "CV",
+          description: "",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/cv/";
+          },
+        },{id: "nav-repositories",
+          title: "repositories",
+          description: "GitHub profile and repositories.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/repositories/";
+          },
+        },{id: "nav-blog",
+          title: "blog",
+          description: "",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/blog/";
+          },
+        },{id: "post-working-on-caviness-with-containers-and-vs-code-tunnels",
+        
+          title: "Working on Caviness with containers and VS Code tunnels",
+        
+        description: "A step-by-step setup for a reproducible Python environment on the University of Delaware&#39;s Caviness cluster. Build a Docker image on your laptop, pull it as a Singularity image on the cluster, open a VS Code tunnel on a GPU node, and keep the code in GitHub.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/caviness-containers-vscode-tunnels/";
+          
+        },
+      },{id: "news-awarded-the-bendett-fellowship-by-the-ud-department-of-electrical-and-computer-engineering",
+          title: 'Awarded the Bendett Fellowship by the UD Department of Electrical and Computer Engineering....',
+          description: "",
+          section: "News",},{id: "news-best-poster-award-signal-processing-communication-and-control-area-at-the-ud-ece-research-day",
+          title: 'Best Poster Award (Signal Processing, Communication, and Control area) at the UD ECE...',
+          description: "",
+          section: "News",},{id: "news-mri-based-whole-brain-elastography-and-volumetric-measurements-to-predict-brain-age-was-accepted-in-biology-methods-and-protocols",
+          title: 'MRI-based whole-brain elastography and volumetric measurements to predict brain age was accepted in...',
+          description: "",
+          section: "News",},{id: "news-a-machine-learning-model-for-post-concussion-musculoskeletal-injury-risk-in-collegiate-athletes-was-accepted-in-sports-medicine",
+          title: 'A Machine Learning Model for Post-Concussion Musculoskeletal Injury Risk in Collegiate Athletes was...',
+          description: "",
+          section: "News",},{id: "news-udaily-covered-our-brain-age-work-with-the-johnson-lab-how-old-is-your-brain",
+          title: 'UDaily covered our brain age work with the Johnson lab: How old is...',
+          description: "",
+          section: "News",},{id: "news-udaily-covered-our-post-concussion-injury-risk-model-a-game-changing-tool",
+          title: 'UDaily covered our post-concussion injury risk model: A game-changing tool.',
+          description: "",
+          section: "News",},{id: "news-new-preprint-on-arxiv-a-systematic-analysis-of-out-of-distribution-detection-under-representation-and-training-paradigm-shifts-with-code-on-github",
+          title: 'New preprint on arXiv: A Systematic Analysis of Out-of-Distribution Detection Under Representation and...',
+          description: "",
+          section: "News",},{id: "news-our-paper-bounding-worst-case-calibration-error-in-ood-detection-under-distribution-shift-was-presented-at-the-aistats-2026-workshop-on-calibration-for-modern-ai-in-tangier-morocco",
+          title: 'Our paper Bounding Worst-Case Calibration Error in OOD Detection Under Distribution Shift was...',
+          description: "",
+          section: "News",},{id: "news-new-website-now-built-with-al-folio",
+          title: 'New website, now built with al-folio.',
+          description: "",
+          section: "News",},{id: "projects-brain-age-from-mr-elastography",
+          title: 'Brain age from MR elastography',
+          description: "3D convolutional networks that relate whole-brain stiffness, damping ratio, and volume maps to age.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/brain-age-elastography/";
+            },},{id: "projects-early-prediction-of-cognitive-decline",
+          title: 'Early prediction of cognitive decline',
+          description: "Which baseline measurements predict the transition from normal cognition to mild cognitive impairment or dementia? A prognostic pipeline prototyped on ADNI for the Delaware Longitudinal Study for Alzheimer&#39;s Prevention.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/early-cognitive-decline/";
+            },},{id: "projects-interpretable-eeg-biomarkers-for-epilepsy",
+          title: 'Interpretable EEG biomarkers for epilepsy',
+          description: "Finding waveform biomarkers that characterize epilepsy in routine scalp EEG, benchmarked against random-convolution and foundation-model classifiers. In collaboration with Nemours Children&#39;s Health.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/eeg-epilepsy-biomarkers/";
+            },},{id: "projects-max-sliced-bures-distance-and-distribution-shift",
+          title: 'Max-sliced Bures distance and distribution shift',
+          description: "A tractable lower bound on the max-sliced Wasserstein-2 distance whose optimal slice acts as a witness function that pinpoints the instances driving a discrepancy between two samples.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/max-sliced-bures/";
+            },},{id: "projects-out-of-distribution-detection-under-distribution-shift",
+          title: 'Out-of-distribution detection under distribution shift',
+          description: "Which OOD detector to trust depends on the learned representation. A systematic benchmark across CNN and ViT backbones, training paradigms, and shift regimes, plus worst-case calibration error bounds.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/ood-detection-under-shift/";
+            },},{id: "projects-post-concussion-musculoskeletal-injury-risk",
+          title: 'Post-concussion musculoskeletal injury risk',
+          description: "An interpretable risk score for musculoskeletal injury after concussion in collegiate athletes, built from longitudinal clinical assessments.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/post-concussion-injury-risk/";
+            },},{
+        id: 'social-cv',
+        title: 'CV',
+        section: 'Socials',
+        handler: () => {
+          window.open("/assets/rendercv/rendercv_output/Cesar_Claros_CV.pdf", "_blank");
+        },
+      },{
+        id: 'social-email',
+        title: 'email',
+        section: 'Socials',
+        handler: () => {
+          window.open("mailto:%63%65%73%61%72@%75%64%65%6C.%65%64%75", "_blank");
+        },
+      },{
+        id: 'social-scholar',
+        title: 'Google Scholar',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://scholar.google.com/citations?user=VZaVub4AAAAJ", "_blank");
+        },
+      },{
+        id: 'social-github',
+        title: 'GitHub',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://github.com/cesar-claros", "_blank");
+        },
+      },{
+        id: 'social-linkedin',
+        title: 'LinkedIn',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://www.linkedin.com/in/cesarclaros", "_blank");
+        },
+      },{
+        id: 'social-orcid',
+        title: 'ORCID',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://orcid.org/0000-0001-7671-9562", "_blank");
+        },
+      },{
+        id: 'social-rss',
+        title: 'RSS Feed',
+        section: 'Socials',
+        handler: () => {
+          window.open("/feed.xml", "_blank");
+        },
+      },{
+      id: 'light-theme',
+      title: 'Change theme to light',
+      description: 'Change the theme of the site to Light',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("light");
+      },
+    },
+    {
+      id: 'dark-theme',
+      title: 'Change theme to dark',
+      description: 'Change the theme of the site to Dark',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("dark");
+      },
+    },
+    {
+      id: 'system-theme',
+      title: 'Use system default theme',
+      description: 'Change the theme of the site to System Default',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("system");
+      },
+    },];
+
+</script> <script src="/assets/al_search/js/shortcut-key.js"></script> </body> </html>
