@@ -14,24 +14,24 @@ mermaid:
   zoomable: true
 ---
 
-This post is a guide about my workflow for runnning experiments on [Caviness](https://docs.hpc.udel.edu/abstract/caviness/caviness), the University of Delaware's community cluster. The setup below is what I use for most of my projects: the environment lives in a container image that I build on my laptop, the code lives in a GitHub repository, and I work on a compute node through a VS Code tunnel as if it were my own machine.
+This post is a guide to my workflow for running experiments on [Caviness](https://docs.hpc.udel.edu/abstract/caviness/caviness), the University of Delaware's community cluster. For most of my projects I build a container image on my laptop for the environment, keep the code in a GitHub repository, and work on a compute node through a VS Code tunnel, much like I would on my own machine.
 
-This post  walks through every step from an empty folder to a running tunnel so that someone starting from zero can follow it. If you only want the commands, each section ends with a code block you can copy.
+The post walks through every step from an empty folder to a running tunnel, so someone starting from zero can follow along. Each step ends with the commands, so you can skip the explanations if you only need those.
 
 
 ## What you need
 
-- **A Caviness account and a workgroup.** You will type its name in the `workgroup` command below, so find it out first.
+- **A Caviness account and a workgroup.** You need the workgroup name for the `workgroup` command below.
 - **Docker installed locally.** [Docker Desktop](https://docs.docker.com/get-docker/) on macOS or Windows, or Docker Engine on Linux. You build the image here; the cluster only runs it.
-- **A Docker Hub account.** The free tier gives you public repositories, which is all this workflow needs. The image contains libraries only, so public is fine.
-- **A GitHub account.** VS Code tunnels authenticate with a GitHub or Microsoft account, and both ends must use the same one. GitHub is the better choice because the same account hosts your code, which is what makes the local-edit, push, pull loop in the last section work.
+- **A Docker Hub account.** A free account with public repositories is enough, since the image only contains libraries.
+- **A GitHub account.** VS Code tunnels authenticate with a GitHub or Microsoft account, and both ends must use the same one. I recommend GitHub, because the same account can host your code, and the last section relies on that.
 - **VS Code** with the [Remote - Tunnels](https://marketplace.visualstudio.com/items?itemName=ms-vscode.remote-server) extension installed.
 
 Everything in this post uses placeholders: `<workgroup>` for your Caviness workgroup, `<user>` for your cluster username, `<dockerhub-user>` for your Docker Hub username, and `<project>` for the project name.
 
 ## Step 1: Separate the environment from the code
 
-The container is a pure environment. It holds Python, the libraries, a few system tools, and the VS Code CLI. It never holds your code or your data. Those are bind-mounted into the container at run time from the cluster's file systems. This split matters for two reasons. First, you rebuild the image only when a dependency changes, which is not frequent, while the code changes every day. Second, the image can be public because there is nothing in it that is yours.
+The container only holds the environment: Python, the libraries, a few system tools, and the VS Code CLI. The code and the data stay on the cluster's file systems and are bind-mounted into the container at run time. Keeping them apart has two advantages. You only rebuild the image when a dependency changes, which does not happen often, while the code changes every day. And the image can be public, since nothing in it belongs to you.
 
 My projects keep the container recipe in its own folder next to the code repository:
 
@@ -45,15 +45,15 @@ My projects keep the container recipe in its own folder next to the code reposit
     verify_env.py
 ```
 
-The `container/` folder is the build context. Nothing outside it is visible to `docker build`, which keeps the context small and keeps the data out of the image by construction.
+The `container/` folder is the build context. Nothing outside it is visible to `docker build`, so the build stays small and the data cannot end up in the image by accident.
 
 ## Step 2: Declare the dependencies
 
-The dependencies live in a standard `pyproject.toml`, and the image installs them with [uv](https://docs.astral.sh/uv/). Two details deserve attention.
+The dependencies live in a standard `pyproject.toml`, and the image installs them with [uv](https://docs.astral.sh/uv/). Two details are easy to get wrong.
 
 **The CUDA version has to match the cluster driver.** PyTorch wheels bundle their own CUDA runtime, but the driver on the compute node caps what that runtime can use. On Caviness the driver supports CUDA 12.4, so I pin the `cu124` wheel index. If you pick a newer index, `torch.cuda.is_available()` returns `False` and nothing tells you why.
 
-**Explicit indexes stay explicit.** With `explicit = true`, uv only consults the PyTorch index for the packages that name it. Everything else resolves from PyPI as usual.
+**Keep the PyTorch index explicit.** With `explicit = true`, uv only consults that index for the packages that name it. Everything else resolves from PyPI as usual.
 
 A trimmed version of the file I use:
 
@@ -87,11 +87,11 @@ url = "https://download.pytorch.org/whl/cu124"
 explicit = true
 ```
 
-`ipykernel` and `debugpy` are there for VS Code: the first runs notebooks inside the container, the second powers the Python debugger over the tunnel.
+VS Code needs `ipykernel` to run notebooks inside the container and `debugpy` for the Python debugger.
 
 ## Step 3: Write the Dockerfile
 
-The Dockerfile has two stages. The builder stage installs the dependencies with uv. The runtime stage starts from the same slim base, copies the installed packages over, adds the handful of system tools the slim image lacks, and installs the VS Code CLI. The build tooling never reaches the final image.
+The Dockerfile has two stages. The builder stage installs the dependencies with uv. The runtime stage starts from the same slim base, copies the installed packages over, adds the handful of system tools the slim image lacks, and installs the VS Code CLI. uv and the build tools stay in the first stage.
 
 ```dockerfile
 # syntax=docker/dockerfile:1
@@ -164,17 +164,17 @@ ENTRYPOINT ["/usr/bin/tini", "-s", "--"]
 CMD ["/usr/local/bin/start-tunnel.sh"]
 ```
 
-Three choices are worth explaining.
+A few decisions in this file are not obvious.
 
-**Why copy `/usr/local` instead of using a virtual environment.** Installing into the system Python of the official image means there is nothing to activate. `python` inside the container is the right interpreter, whether you run it through the tunnel, through `singularity exec`, or in a batch job.
+**No virtual environment.** Installing into the system Python of the official image means there is nothing to activate. `python` inside the container is always the right interpreter, whether you run it through the tunnel, through `singularity exec`, or in a batch job.
 
-**Why `tini`.** Singularity runs the container's command as a normal process, and `code tunnel` expects to receive signals directly. `tini` forwards them and reaps child processes, so a cancelled Slurm job shuts the tunnel down instead of leaving it half alive.
+**Why `tini`.** Singularity runs the container's command as a normal process, and `code tunnel` expects to receive signals directly. `tini` forwards them and reaps child processes, so the tunnel shuts down cleanly when Slurm cancels the job.
 
-**Why nothing NVIDIA in the image.** The CUDA runtime comes with the PyTorch wheels. The driver comes from the host through Singularity's `--nv` flag. The image does not need the CUDA toolkit, which keeps it around two gigabytes instead of eight.
+**No CUDA toolkit.** The PyTorch wheels ship their own CUDA runtime, and Singularity's `--nv` flag brings in the host driver. Without the toolkit the image is around two gigabytes instead of eight.
 
 ## Step 4: The tunnel entry script
 
-The default command of the image starts a VS Code tunnel. Two environment variables make it usable on a shared cluster.
+The default command of the image starts a VS Code tunnel. Two environment variables adapt it to a shared cluster.
 
 ```sh
 #!/bin/sh
@@ -194,7 +194,7 @@ mkdir -p "$data_dir"
 exec code tunnel --accept-server-license-terms --name "$name" --cli-data-dir "$data_dir" "$@"
 ```
 
-`TUNNEL_NAME` is what you will see in the VS Code Remote Explorer. The default, the node's hostname, is a good choice on a cluster because it tells you which node you are on.
+`TUNNEL_NAME` is the name that shows up in the VS Code Remote Explorer. The default is the node's hostname, which is convenient on a cluster because it tells you where you are running.
 
 `TUNNEL_DATA_DIR` fixes a problem you will hit the second time you start a tunnel. The CLI keeps a lock file in its data directory. Your home directory is the same on every node, so two tunnels on two nodes fight over one lock, and the second one dies with `error access singleton`. Giving each tunnel its own directory, keyed by node name, avoids that. If your home quota is tight, point it at node-local scratch instead, as shown later.
 
@@ -218,7 +218,7 @@ docker run --rm -it --entrypoint bash <dockerhub-user>/<project>:v1
 
 The second command drops you into a shell inside the image, which is the fastest way to check that a tool you expect is there.
 
-> On an Apple Silicon Mac the `linux/amd64` image runs under emulation, so it is slow. That is fine for import checks; do not benchmark anything locally.
+> On an Apple Silicon Mac the `linux/amd64` image runs under emulation, so it is slow. That is fine for checking imports, but do not time anything there.
 {: .block-tip }
 
 ## Step 6: Push the image to Docker Hub
@@ -228,7 +228,7 @@ docker login
 docker push <dockerhub-user>/<project>:v1
 ```
 
-Use a real tag rather than `latest`. When you rebuild with new dependencies, push `v2`, and the old `.sif` on the cluster keeps working until you decide to switch. Reproducibility is mostly this: knowing which environment produced which result.
+Use a version tag instead of `latest`. When you rebuild with new dependencies, push `v2`. The old `.sif` on the cluster keeps working until you decide to switch, and you always know which environment produced which result.
 
 ## Step 7: Pull the image on Caviness
 
@@ -240,7 +240,7 @@ workgroup -g <workgroup>
 vpkg_require singularity
 ```
 
-Before pulling, decide where things live. Caviness has [four file systems](https://docs.hpc.udel.edu/abstract/caviness/filesystems/filesystems), and picking the wrong one costs you either quota or performance.
+Before pulling, decide where things live. Caviness has [four file systems](https://docs.hpc.udel.edu/abstract/caviness/filesystems/filesystems), and each has a different purpose.
 
 | Location | What goes there | Why |
 | --- | --- | --- |
@@ -249,7 +249,7 @@ Before pulling, decide where things live. Caviness has [four file systems](https
 | `/lustre/scratch` | Datasets and large intermediate files | Fast parallel file system, but purged periodically and no executables allowed. |
 | `$TMPDIR` | Per-job scratch, the tunnel's CLI state | Node-local disk, gone when the job ends. |
 
-The one setting that avoids most first-day trouble is the cache directory. Singularity unpacks every Docker layer into a cache before assembling the `.sif`, and by default that cache is in your home directory. Point it at your workgroup storage, and put the export in your `.bashrc` so you never forget it.
+One setting to get right on the first day is the cache directory. Singularity unpacks every Docker layer into a cache before assembling the `.sif`, and by default that cache is in your home directory. Point it at your workgroup storage, and put the export in your `.bashrc` so you do not have to remember it.
 
 ```bash
 mkdir -p /work/<workgroup>/<user>/containers /work/<workgroup>/<user>/.singularity
@@ -259,11 +259,11 @@ cd /work/<workgroup>/<user>/containers
 singularity pull <project>.sif docker://<dockerhub-user>/<project>:v1
 ```
 
-Pulling happens on the login node, which has internet access, and produces a single file, `<project>.sif`. Running that file is the only thing that has to happen on a compute node.
+The pull runs on the login node, which has internet access, and produces a single file, `<project>.sif`. Everything after this point runs on a compute node.
 
 ## Step 8: Get a compute node
 
-Interactive work goes through `salloc`. The `_workgroup_` partition resolves to your own workgroup's priority nodes; use `standard` if you are fine with preemption, or `devel` for quick tests. Request the resources you actually need, because idle GPUs in an interactive allocation are GPUs nobody else can use.
+Interactive work goes through `salloc`. The `_workgroup_` partition resolves to your own workgroup's priority nodes; use `standard` if you are fine with preemption, or `devel` for quick tests. Request only what you need, since a GPU sitting idle in an interactive session is unavailable to everyone else.
 
 ```bash
 salloc --partition=_workgroup_ --gres=gpu:1 --cpus-per-task=8 --mem=48G --time=04:00:00
@@ -314,7 +314,7 @@ cd /work/<workgroup>/<user>/<project>
 singularity exec --nv containers/<project>.sif python container/verify_env.py
 ```
 
-`--nv` is what binds the host's NVIDIA driver into the container. Forget it and the `cuda available` line fails while everything else passes.
+The `--nv` flag mounts the host's NVIDIA driver into the container. Without it, the `cuda available` check fails and everything else passes.
 
 ## Step 10: Start the tunnel and connect
 
@@ -334,11 +334,11 @@ The first time, the CLI asks how to sign in. Choose GitHub, open the printed `ht
 
 Now on your laptop: open VS Code, open the Remote Explorer view, pick **Tunnels** in the dropdown, and connect to `<project>-gpu`. VS Code installs its server through the tunnel on first use, then opens a window whose terminal, Python interpreter, debugger, and notebooks all run inside the container on the compute node. Open the folder `/work/<workgroup>/<user>/<project>/code` and you are working on the cluster.
 
-The tunnel lives as long as the `singularity run` process, which lives as long as the allocation. When the time limit hits, the window disconnects. Reconnecting is a new `salloc` and a new `singularity run`.
+The tunnel stays up as long as the `singularity run` process, which ends with the allocation. When the time limit is reached the window disconnects, and to get back in you request a new node and start the tunnel again.
 
 ## Step 11: Keep the code in GitHub
 
-With the tunnel, you can edit directly on the cluster, and for quick fixes that is what I do. For real development I prefer the opposite direction: edit locally, push, pull on the cluster. Two reasons. Local tools are faster and always available, including AI coding assistants such as Claude Code or Copilot that work on a local checkout. And a git history that passes through GitHub is the record of what ran when, which is the reproducibility you will want when writing the paper.
+The tunnel lets you edit directly on the cluster, and for quick fixes I do. For anything larger I edit on my laptop, push, and pull on the cluster. Local tools are faster and always available, including AI coding assistants such as Claude Code or Copilot, which work on a local checkout. And since every change passes through GitHub, the git history tells you which code ran when, which helps a lot when writing up results.
 
 One-time setup on the cluster:
 
@@ -395,7 +395,7 @@ tail -f /work/<workgroup>/<user>/<project>/logs/<project>-train-<jobid>.out
 
 Anything after `sbatch train.qs` on the command line is forwarded to the script through `"$@"`, so Hydra overrides and flags pass straight through.
 
-For a long run that you still want to watch, there is a middle path: inside an interactive allocation, launch the script detached and keep the tunnel open next to it.
+If you want to watch a long run without a batch job, launch it in the background inside the interactive allocation and keep the tunnel open next to it.
 
 ```bash
 nohup singularity exec --nv -B /work/<workgroup>:/work/<workgroup> \
@@ -437,4 +437,4 @@ singularity exec <project>-v2.sif python -m pip freeze > container/requirements.
 
 ## Closing
 
-The whole setup is three files in a `container/` folder and about ten commands. What it buys is an environment that is identical on every node and every rerun, an editor that runs where the GPU is, and a code history that goes through GitHub whether you type on the laptop or on the cluster. The container recipe in this post is the one I use for my current projects, trimmed of project-specific dependencies. Copy it, change the `pyproject.toml`, and it should work as is.
+The whole setup comes down to three files in a `container/` folder and about ten commands. In return, the environment is the same on every node and every rerun, the editor runs next to the GPU, and every change goes through GitHub whether I type it on the laptop or on the cluster. The recipe in this post is the one I use in my current projects, minus the project-specific dependencies. Copy it, edit the `pyproject.toml`, and it should work as is.
