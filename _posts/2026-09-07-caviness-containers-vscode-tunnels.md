@@ -435,6 +435,6 @@ singularity exec <project>-v2.sif python -m pip freeze > container/requirements.
 - **Locale warnings from Python or git.** Start the container with `LANG=C.UTF-8` in front of the `singularity` command.
 - **VS Code shows the tunnel but cannot connect.** The allocation ended. Check `squeue -u <user>`; if the job is gone, request a new node and start the tunnel again.
 
-## Closing
+<!-- ## Closing
 
-The whole setup comes down to three files in a `container/` folder and about ten commands. In return, the environment is the same on every node and every rerun, the editor runs next to the GPU, and every change goes through GitHub whether I type it on the laptop or on the cluster. The recipe in this post is the one I use in my current projects, minus the project-specific dependencies. Copy it, edit the `pyproject.toml`, and it should work as is.
+The whole setup comes down to three files in a `container/` folder and about ten commands. In return, the environment is the same on every node and every rerun, the editor runs next to the GPU, and every change goes through GitHub whether I type it on the laptop or on the cluster. The recipe in this post is the one I use in my current projects, minus the project-specific dependencies. Copy it, edit the `pyproject.toml`, and it should work as is. -->
