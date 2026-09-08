@@ -3,6 +3,9 @@ github_users:
 
 repo_description_lines_max: 2
 
-# Uncomment and list repositories to feature on the repositories page
-# github_repos:
-#   - cesar-claros/some-repository
+github_repos:
+  - cesar-claros/ood_systematic
+  - cesar-claros/MRE_MRI_BrainAge
+  - cesar-claros/brain_age
+  - cesar-claros/R21_risk_model
+  - cesar-claros/sliced_bures_flows

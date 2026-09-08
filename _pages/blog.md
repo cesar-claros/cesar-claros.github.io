@@ -2,8 +2,8 @@
 layout: default
 permalink: /blog/
 title: blog
-nav: false # set to true once there are posts
-nav_order: 5
+nav: true
+nav_order: 6
 pagination:
   enabled: true
   collection: posts

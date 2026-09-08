@@ -344,8 +344,8 @@ display_categories: [] # these categories will be displayed on the front page of
 # -----------------------------------------------------------------------------
 
 scholar:
-  last_name: [Claros, Claros Olivares]
-  first_name: [César, Cesar, C., C. C., Claudio César]
+  last_name: [Claros, Claros Olivares, Claros-Olivares]
+  first_name: [César, Cesar, C., C. C., Claudio, Claudio C., Claudio César, Claudio Cesar]
 
   style: apa
   locale: en

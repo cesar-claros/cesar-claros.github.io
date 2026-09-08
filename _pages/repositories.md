@@ -3,8 +3,8 @@ layout: page
 permalink: /repositories/
 title: repositories
 description: GitHub profile and repositories.
-nav: false # set to true to show the GitHub stats page in the navbar
-nav_order: 6
+nav: true
+nav_order: 5
 ---
 
 {% if site.data.repositories.github_users %}

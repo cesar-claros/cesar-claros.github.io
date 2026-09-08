@@ -1,11 +1,11 @@
 # this file contains the social media links and usernames of the author
 # the socials will be displayed in the order they are defined here
 # for more information, please refer to the documentation of jekyll-socials plugin: https://github.com/george-gca/jekyll-socials
-cv_pdf: /assets/pdf/CV_Cesar.pdf # path to your CV PDF file
-email: cesar.claros@outlook.com # your email address
+cv_pdf: /assets/rendercv/rendercv_output/Cesar_Claros_CV.pdf # generated from _data/cv.yml by .github/workflows/render-cv.yml
+email: cesar@udel.edu # your email address
+scholar_userid: VZaVub4AAAAJ # your Google Scholar ID
 github_username: cesar-claros # your GitHub user name
-# linkedin_username: # your LinkedIn user name
-# scholar_userid: # your Google Scholar ID
-# orcid_id: # your ORCID ID
+linkedin_username: cesarclaros # your LinkedIn user name
+orcid_id: 0000-0001-7671-9562 # your ORCID ID
 # x_username: # your X handle
-rss_icon: false # set to true once the blog has posts
+rss_icon: true # RSS feed of the blog

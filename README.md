@@ -11,9 +11,9 @@ Personal academic website of César Claros, built with the [al-folio](https://gi
 | Publications         | `_bibliography/papers.bib`                |
 | Projects             | `_projects/*.md`                          |
 | News                 | `_news/*.md`                              |
-| CV page              | `_data/cv.yml` (RenderCV format), PDF in `assets/pdf/` |
+| CV page              | `_data/cv.yml` (RenderCV format); PDF auto-rendered to `assets/rendercv/rendercv_output/` |
 | Social links         | `_data/socials.yml`                       |
-| Blog posts (hidden)  | `_posts/YYYY-MM-DD-title.md`, enable in `_pages/blog.md` |
+| Blog posts           | `_posts/YYYY-MM-DD-title.md` |
 
 See `docs/CUSTOMIZE.md` for the full customization guide and `docs/FAQ.md` for common issues.
 

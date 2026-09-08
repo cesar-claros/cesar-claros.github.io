@@ -1,26 +1,35 @@
 # CV data in RenderCV format (https://docs.rendercv.com/user_guide/).
 # Rendered on /cv/ by the al_folio_cv plugin and to PDF by .github/workflows/render-cv.yml.
-# Ported from assets/pdf/CV_Cesar.pdf (2021 edition). TODO: bring up to date.
 #
 # Section names matter for the web renderer: "Education", "Experience", "Publications" and
 # "Languages" get dedicated layouts; any other section renders `bullet` or `label`/`details` entries.
 cv:
   name: Claudio César Claros Olivares
-  location: La Paz, Bolivia
-  email: cesar.claros@outlook.com
+  location: Newark, DE, USA
+  email: cesar@udel.edu
   website: https://cesar-claros.github.io/
   social_networks:
     - network: GitHub
       username: cesar-claros
+    - network: LinkedIn
+      username: cesarclaros
+    - network: Google Scholar
+      username: VZaVub4AAAAJ
+    - network: ORCID
+      username: 0000-0001-7671-9562
 
   sections:
     Education:
-      - institution: Universidad Mayor de San Andrés (UMSA)
-        area: Electronics Engineering
-        degree: M.Sc.
-        location: La Paz, Bolivia
-        start_date: "2020-10"
+      - institution: University of Delaware
+        area: Electrical and Computer Engineering
+        degree: Ph.D.
+        location: Newark, DE, USA
+        start_date: "2022-01"
         end_date: present
+        highlights:
+          - "Advisor: Austin J. Brockmeier, Computational Neural and Information Engineering Lab"
+          - "Research: reliable machine learning under distribution shift (out-of-distribution detection, calibration) and machine learning for brain imaging and sports medicine"
+          - "Bendett Fellowship (2023); Best Poster Award, ECE Research Day (2024)"
 
       - institution: University of Delaware
         area: Electrical and Computer Engineering
@@ -52,6 +61,17 @@ cv:
           - Class valedictorian
 
     Experience:
+      - company: Computational Neural and Information Engineering Lab, University of Delaware
+        position: Graduate Research Assistant
+        location: Newark, DE, USA
+        start_date: "2022-01"
+        end_date: present
+        highlights:
+          - Benchmarked out-of-distribution detection methods across CNN and ViT representations and training paradigms, and derived worst-case calibration error bounds under distribution shift.
+          - Developed 3D convolutional networks and interpretation methods for brain age prediction from magnetic resonance elastography, in collaboration with Curtis L. Johnson's lab.
+          - Built an interpretable post-concussion musculoskeletal injury risk model from longitudinal clinical data, in collaboration with Thomas A. Buckley's lab.
+          - "Ongoing: early prediction of cognitive decline on ADNI for the Delaware Longitudinal Study for Alzheimer's Prevention (Delaware Center for Cognitive Aging Research), and interpretable EEG biomarkers for epilepsy from routine scalp EEG with Nemours Children's Health."
+
       - company: Computational Neural and Information Engineering Lab, University of Delaware
         position: Research Assistant
         location: Newark, DE, USA
@@ -101,14 +121,96 @@ cv:
           - Developed a software application for EEG acquisition and spectral analysis via the fast Fourier transform.
 
     Publications:
-      - title: Max-sliced Bures distance for interpreting discrepancies
+      - title: Bounding Worst-Case Calibration Error in OOD Detection Under Distribution Shift
+        authors:
+          - Claudio C. Claros-Olivares
+          - Austin J. Brockmeier
+        date: "2026-05"
+        journal: AISTATS 2026 Workshop on Calibration for Modern AI
+        url: https://openreview.net/forum?id=aZnAoyzssI
+
+      - title: A Systematic Analysis of Out-of-Distribution Detection Under Representation and Training Paradigm Shifts
+        authors:
+          - Claudio César Claros Olivares
+          - Austin J. Brockmeier
+        date: "2025-11"
+        journal: arXiv preprint arXiv:2511.11934 (under review)
+        url: https://arxiv.org/abs/2511.11934
+
+      - title: A Machine Learning Model for Post-Concussion Musculoskeletal Injury Risk in Collegiate Athletes
+        authors:
+          - Claudio C. Claros
+          - Melissa N. Anderson
+          - Wei Qian
+          - Austin J. Brockmeier
+          - Thomas A. Buckley
+        date: "2025"
+        journal: Sports Medicine, 55(8), 1971-1982
+        doi: 10.1007/s40279-025-02196-4
+
+      - title: MRI-based whole-brain elastography and volumetric measurements to predict brain age
+        authors:
+          - Claudio C. Claros-Olivares
+          - Rebecca G. Clements
+          - Grace McIlvain
+          - Curtis L. Johnson
+          - Austin J. Brockmeier
+        date: "2024"
+        journal: Biology Methods and Protocols, 10(1), bpae086
+        doi: 10.1093/biomethods/bpae086
+
+      - title: "Integrative data analysis to identify persistent post-concussion deficits and subsequent musculoskeletal injury risk: project structure and methods"
+        authors:
+          - Melissa Anderson
+          - Claudio Cesar Claros
+          - Wei Qian
+          - Austin Brockmeier
+          - Thomas A. Buckley
+        date: "2024"
+        journal: BMJ Open Sport & Exercise Medicine, 10(1), e001859
+        doi: 10.1136/bmjsem-2023-001859
+
+      - title: Mechanical Property Based Brain Age Prediction using Convolutional Neural Networks
+        authors:
+          - Rebecca G. Clements
+          - Claudio C. Claros-Olivares
+          - Grace McIlvain
+          - Austin J. Brockmeier
+          - Curtis L. Johnson
+        date: "2023"
+        journal: bioRxiv
+        doi: 10.1101/2023.02.12.528186
+
+      - title: A Machine Learning Approach for Modeling and Inverse Design of Polymer Blends
+        authors:
+          - Soham Jariwala
+          - Claudio César Claros Olivares
+          - Zijie Wu
+        date: "2022-05"
+        journal: "Project report, CHEG/CIS 867, University of Delaware (industry mentor: DuPont)"
+        url: https://bpb-us-w2.wpmucdn.com/sites.udel.edu/dist/d/12003/files/2022/05/Final_Dupont.postfeedback.pdf
+
+      - title: Identifying the Instances Associated with Distribution Shifts using the Max-Sliced Bures Divergence
         authors:
           - Austin J. Brockmeier
           - Claudio César Claros Olivares
           - Matthew S. Emigh
           - Luis G. Sanchez Giraldo
+        date: "2021-12"
+        journal: "NeurIPS 2021 Workshop on Distribution Shifts: Connecting Methods and Applications"
+        url: https://neurips.cc/virtual/2021/35481
+
+      - title: Max-sliced Bures Distance for Interpreting Discrepancies
+        authors:
+          - Austin J. Brockmeier
+          - Claudio Cesar Claros
+          - Carlos H. Mendoza-Cardenas
+          - Yüksel Karahan
+          - Matthew S. Emigh
+          - Luis Gonzalo Sanchez Giraldo
         date: "2021"
-        journal: Preprint # TODO: final venue
+        journal: Preprint, OpenReview
+        url: https://openreview.net/forum?id=D2Fp_qheYu
 
       - title: "Synergistic human-machine prediction: Active error analysis and mitigation with Gaussian process regression"
         authors:
@@ -124,6 +226,11 @@ cv:
         journal: IEEE Bolivian Engineering and Technology Congress (BETCON), La Paz, Bolivia
 
     Presentations:
+      - bullet: "**May 2026**: Poster, *Bounding Worst-Case Calibration Error in OOD Detection Under Distribution Shift*, AISTATS 2026 Workshop on Calibration for Modern AI, Tangier, Morocco."
+      - bullet: "**May 2024**: Poster, ECE Research Day, University of Delaware. Best Poster Award, Signal Processing, Communication, and Control area."
+      - bullet: "**Jul. 2024**: Co-author, *Predictors of Post-Concussion Musculoskeletal Injury Severity: An Integrated Data Analysis Approach*, UK Collaborating Centre on Injury and Illness Prevention in Sport (IOC Research Centre), Edinburgh, UK."
+      - bullet: "**Jul. 2022**: Co-author, *Mechanical property-based brain age prediction using artificial neural networks*, World Congress of Biomechanics, Taipei, Taiwan."
+      - bullet: "**Dec. 2021**: Poster, *Identifying the Instances Associated with Distribution Shifts using the Max-Sliced Bures Divergence*, NeurIPS 2021 Workshop on Distribution Shifts."
       - bullet: "**Feb. 2020**: Poster, *Active error analysis and mitigation for synergistic machine learning infrastructure*, DARWIN Computing Symposium, Data Science Institute, University of Delaware."
       - bullet: "**Nov. 2019**: Invited talk, *Learning an error-aware model for synergistic human-machine prediction*, SIG-AI Seminar, Department of Computer and Information Sciences, University of Delaware."
       - bullet: "**Apr. 2016**: Invited talk, *Digital signal processing algorithms and machine learning*, IEEE Seminar on Artificial Intelligence, IEEE Student Branch, Universidad Católica Boliviana, La Paz."
@@ -131,6 +238,8 @@ cv:
       - bullet: "**Aug. 2014**: Invited talk, *Research on brain signal processing*, La Paz Ciudad Digital 2.0, representing the Institute of Applied Electronics, UMSA."
 
     "Honors & Awards":
+      - bullet: "**2024**: Best Poster Award (Signal Processing, Communication, and Control area), ECE Research Day, University of Delaware."
+      - bullet: "**2023**: Bendett Fellowship, Department of Electrical and Computer Engineering, University of Delaware."
       - bullet: "**2017**: Bolivian Government Scholarship for graduate studies abroad (30 of 100 scholarships awarded nationwide that year)."
       - bullet: "**2015**: Honorable Mention, *Most Challenging Team*, Minesweepers: Towards a Landmine-Free World 2015, Antofagasta, Chile (Bolivian Team)."
       - bullet: "**2015**: Senatorial Declaration, Chamber of Senators of the Plurinational Legislative Assembly of Bolivia, for outstanding participation in the NASA Space Apps Challenge 2015."
@@ -142,10 +251,10 @@ cv:
     Technical Skills:
       - label: Programming languages
         details: Python, C/C++, MATLAB, Octave, JavaScript, Julia
-      - label: Libraries
-        details: OpenCV, CUDA, SciPy, NumPy, pandas
-      - label: Machine learning frameworks
-        details: TensorFlow, PyTorch, Keras, scikit-learn
+      - label: Machine learning
+        details: PyTorch, PyTorch Lightning, Hydra, TensorFlow, Keras, scikit-learn
+      - label: Scientific computing
+        details: NumPy, SciPy, pandas, OpenCV, CUDA
 
     Languages:
       - name: Spanish
